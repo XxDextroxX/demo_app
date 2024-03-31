@@ -17,27 +17,23 @@ class ApiShopping {
     });
   }
 
-  Future<List<ShoppingModel>> getShopping() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
+  Stream<List<ShoppingModel>> getShoppingRealTime() {
+    final auth = FirebaseAuth.instance;
     final uid = auth.currentUser?.uid;
 
-    // Obtenemos una referencia a la base de datos de Firestore
     final firestore = FirebaseFirestore.instance;
-
-    // Obtenemos todos los documentos de la colección 'shopping' que tienen el 'uid' especificado
-    final querySnapshot = await firestore
+    final query = firestore
         .collection('shopping')
         .where('uid', isEqualTo: uid)
-        .get();
+        .snapshots();
 
-    // Convertimos cada documento a un objeto ShoppingModel y los agregamos a una lista
-    final shoppingList = querySnapshot.docs.map((doc) {
-      return ShoppingModel.fromJson({
-        'id': doc.id, // Asegúrate de incluir el id del documento
-        ...doc.data(),
-      });
-    }).toList();
-
-    return shoppingList;
+    return query.map((querySnapshot) {
+      return querySnapshot.docs.map((doc) {
+        return ShoppingModel.fromJson({
+          'id': doc.id,
+          ...doc.data(),
+        });
+      }).toList();
+    });
   }
 }

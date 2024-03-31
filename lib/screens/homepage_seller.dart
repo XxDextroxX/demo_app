@@ -31,22 +31,12 @@ class HomePageSellerState extends ConsumerState<HomePageSeller> {
 
   @override
   Widget build(BuildContext context) {
-    final updateState = ref.watch(updateStateProvider);
-    final updateStateNotifier = ref.watch(updateStateProvider.notifier);
-    final getProducts =
-        ref.watch(getProductsProvider(updateStateAux: updateState));
+    final getProductsRealTime =
+        ref.watch(getProductsRealTimeProvider(getAll: false));
     final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           title: const Text('Productos'),
-          actions: [
-            IconButton(
-              onPressed: () {
-                updateStateNotifier.update();
-              },
-              icon: const Icon(Icons.refresh),
-            ),
-          ],
         ),
         drawer: const DrawerWidget(),
         floatingActionButton: FloatingActionButton(
@@ -55,7 +45,7 @@ class HomePageSellerState extends ConsumerState<HomePageSeller> {
           },
           child: const Icon(Icons.add),
         ),
-        body: getProducts.when(
+        body: getProductsRealTime.when(
           data: (data) {
             if (data.isEmpty) {
               return const Center(

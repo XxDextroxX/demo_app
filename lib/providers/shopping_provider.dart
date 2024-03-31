@@ -87,22 +87,8 @@ class TotalToPay extends _$TotalToPay {
 }
 
 @riverpod
-Future<List<ShoppingModel>> getShopping(GetShoppingRef ref,
-    {bool updateStateAux = true}) async {
-  List<ShoppingModel> response = [];
+Stream<List<ShoppingModel>> getShopping(GetShoppingRef ref) {
   final api = ApiShopping();
-  response = await api.getShopping();
+  final response = api.getShoppingRealTime();
   return response;
-}
-
-@riverpod
-class UpdateStateShopping extends _$UpdateStateShopping {
-  @override
-  bool build() {
-    return true;
-  }
-
-  void update() {
-    state = !state;
-  }
 }

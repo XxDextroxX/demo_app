@@ -5,31 +5,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'provider_product.g.dart';
 
 @riverpod
-Future<List<ProductModel>> getProducts(GetProductsRef ref,
-    {bool updateStateAux = true}) async {
-  List<ProductModel> response = [];
+Stream<List<ProductModel>> getProductsRealTime(GetProductsRealTimeRef ref,
+    {bool getAll = true}) {
   final api = ApiProducts();
-  response = await api.getProducts();
+  final response = api.getProductsRealTime(getAll: getAll);
   return response;
-}
-
-@riverpod
-Future<List<ProductModel>> getAllProducts(GetAllProductsRef ref,
-    {bool updateStateAux = true}) async {
-  List<ProductModel> response = [];
-  final api = ApiProducts();
-  response = await api.getProducts(getAll: true);
-  return response;
-}
-
-@riverpod
-class UpdateState extends _$UpdateState {
-  @override
-  bool build() {
-    return true;
-  }
-
-  void update() {
-    state = !state;
-  }
 }

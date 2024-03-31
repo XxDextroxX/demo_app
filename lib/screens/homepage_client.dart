@@ -12,27 +12,17 @@ class HomePageClient extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final updateState = ref.watch(updateStateProvider);
-    final updateStateNotifier = ref.watch(updateStateProvider.notifier);
     final listShopping = ref.watch(listShoppingProvider);
-    final getAllProducts = ref.watch(
-      getAllProductsProvider(updateStateAux: updateState),
-    );
+    final getProductsRealTime = ref.watch(getProductsRealTimeProvider());
     return Scaffold(
         appBar: AppBar(
           title: const Text('Productos'),
           actions: [
-            IconButton(
-              onPressed: () {
-                updateStateNotifier.update();
-              },
-              icon: const Icon(Icons.refresh),
-            ),
             _cardShopping(listShopping, context),
           ],
         ),
         drawer: const DrawerWidget(),
-        body: getAllProducts.when(
+        body: getProductsRealTime.when(
           data: (data) {
             if (data.isEmpty) {
               return const WidgetEmpty();

@@ -6,7 +6,8 @@ part of 'provider_product.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getProductsHash() => r'85e11987ea326247b97ccf2ce5e92df1c263e643';
+String _$getProductsRealTimeHash() =>
+    r'05d40eba42dee77f742edcff31f1c1e640b81666';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +30,30 @@ class _SystemHash {
   }
 }
 
-/// See also [getProducts].
-@ProviderFor(getProducts)
-const getProductsProvider = GetProductsFamily();
+/// See also [getProductsRealTime].
+@ProviderFor(getProductsRealTime)
+const getProductsRealTimeProvider = GetProductsRealTimeFamily();
 
-/// See also [getProducts].
-class GetProductsFamily extends Family<AsyncValue<List<ProductModel>>> {
-  /// See also [getProducts].
-  const GetProductsFamily();
+/// See also [getProductsRealTime].
+class GetProductsRealTimeFamily extends Family<AsyncValue<List<ProductModel>>> {
+  /// See also [getProductsRealTime].
+  const GetProductsRealTimeFamily();
 
-  /// See also [getProducts].
-  GetProductsProvider call({
-    bool updateStateAux = true,
+  /// See also [getProductsRealTime].
+  GetProductsRealTimeProvider call({
+    bool getAll = true,
   }) {
-    return GetProductsProvider(
-      updateStateAux: updateStateAux,
+    return GetProductsRealTimeProvider(
+      getAll: getAll,
     );
   }
 
   @override
-  GetProductsProvider getProviderOverride(
-    covariant GetProductsProvider provider,
+  GetProductsRealTimeProvider getProviderOverride(
+    covariant GetProductsRealTimeProvider provider,
   ) {
     return call(
-      updateStateAux: provider.updateStateAux,
+      getAll: provider.getAll,
     );
   }
 
@@ -68,241 +69,94 @@ class GetProductsFamily extends Family<AsyncValue<List<ProductModel>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getProductsProvider';
+  String? get name => r'getProductsRealTimeProvider';
 }
 
-/// See also [getProducts].
-class GetProductsProvider
-    extends AutoDisposeFutureProvider<List<ProductModel>> {
-  /// See also [getProducts].
-  GetProductsProvider({
-    bool updateStateAux = true,
+/// See also [getProductsRealTime].
+class GetProductsRealTimeProvider
+    extends AutoDisposeStreamProvider<List<ProductModel>> {
+  /// See also [getProductsRealTime].
+  GetProductsRealTimeProvider({
+    bool getAll = true,
   }) : this._internal(
-          (ref) => getProducts(
-            ref as GetProductsRef,
-            updateStateAux: updateStateAux,
+          (ref) => getProductsRealTime(
+            ref as GetProductsRealTimeRef,
+            getAll: getAll,
           ),
-          from: getProductsProvider,
-          name: r'getProductsProvider',
+          from: getProductsRealTimeProvider,
+          name: r'getProductsRealTimeProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getProductsHash,
-          dependencies: GetProductsFamily._dependencies,
+                  : _$getProductsRealTimeHash,
+          dependencies: GetProductsRealTimeFamily._dependencies,
           allTransitiveDependencies:
-              GetProductsFamily._allTransitiveDependencies,
-          updateStateAux: updateStateAux,
+              GetProductsRealTimeFamily._allTransitiveDependencies,
+          getAll: getAll,
         );
 
-  GetProductsProvider._internal(
+  GetProductsRealTimeProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.updateStateAux,
+    required this.getAll,
   }) : super.internal();
 
-  final bool updateStateAux;
+  final bool getAll;
 
   @override
   Override overrideWith(
-    FutureOr<List<ProductModel>> Function(GetProductsRef provider) create,
+    Stream<List<ProductModel>> Function(GetProductsRealTimeRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetProductsProvider._internal(
-        (ref) => create(ref as GetProductsRef),
+      override: GetProductsRealTimeProvider._internal(
+        (ref) => create(ref as GetProductsRealTimeRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        updateStateAux: updateStateAux,
+        getAll: getAll,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<ProductModel>> createElement() {
-    return _GetProductsProviderElement(this);
+  AutoDisposeStreamProviderElement<List<ProductModel>> createElement() {
+    return _GetProductsRealTimeProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetProductsProvider &&
-        other.updateStateAux == updateStateAux;
+    return other is GetProductsRealTimeProvider && other.getAll == getAll;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, updateStateAux.hashCode);
+    hash = _SystemHash.combine(hash, getAll.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin GetProductsRef on AutoDisposeFutureProviderRef<List<ProductModel>> {
-  /// The parameter `updateStateAux` of this provider.
-  bool get updateStateAux;
+mixin GetProductsRealTimeRef
+    on AutoDisposeStreamProviderRef<List<ProductModel>> {
+  /// The parameter `getAll` of this provider.
+  bool get getAll;
 }
 
-class _GetProductsProviderElement
-    extends AutoDisposeFutureProviderElement<List<ProductModel>>
-    with GetProductsRef {
-  _GetProductsProviderElement(super.provider);
+class _GetProductsRealTimeProviderElement
+    extends AutoDisposeStreamProviderElement<List<ProductModel>>
+    with GetProductsRealTimeRef {
+  _GetProductsRealTimeProviderElement(super.provider);
 
   @override
-  bool get updateStateAux => (origin as GetProductsProvider).updateStateAux;
+  bool get getAll => (origin as GetProductsRealTimeProvider).getAll;
 }
-
-String _$getAllProductsHash() => r'4223bcd8b1ca416adb62d8b1f9d6cd02cbdd8d20';
-
-/// See also [getAllProducts].
-@ProviderFor(getAllProducts)
-const getAllProductsProvider = GetAllProductsFamily();
-
-/// See also [getAllProducts].
-class GetAllProductsFamily extends Family<AsyncValue<List<ProductModel>>> {
-  /// See also [getAllProducts].
-  const GetAllProductsFamily();
-
-  /// See also [getAllProducts].
-  GetAllProductsProvider call({
-    bool updateStateAux = true,
-  }) {
-    return GetAllProductsProvider(
-      updateStateAux: updateStateAux,
-    );
-  }
-
-  @override
-  GetAllProductsProvider getProviderOverride(
-    covariant GetAllProductsProvider provider,
-  ) {
-    return call(
-      updateStateAux: provider.updateStateAux,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'getAllProductsProvider';
-}
-
-/// See also [getAllProducts].
-class GetAllProductsProvider
-    extends AutoDisposeFutureProvider<List<ProductModel>> {
-  /// See also [getAllProducts].
-  GetAllProductsProvider({
-    bool updateStateAux = true,
-  }) : this._internal(
-          (ref) => getAllProducts(
-            ref as GetAllProductsRef,
-            updateStateAux: updateStateAux,
-          ),
-          from: getAllProductsProvider,
-          name: r'getAllProductsProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$getAllProductsHash,
-          dependencies: GetAllProductsFamily._dependencies,
-          allTransitiveDependencies:
-              GetAllProductsFamily._allTransitiveDependencies,
-          updateStateAux: updateStateAux,
-        );
-
-  GetAllProductsProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.updateStateAux,
-  }) : super.internal();
-
-  final bool updateStateAux;
-
-  @override
-  Override overrideWith(
-    FutureOr<List<ProductModel>> Function(GetAllProductsRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: GetAllProductsProvider._internal(
-        (ref) => create(ref as GetAllProductsRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        updateStateAux: updateStateAux,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<List<ProductModel>> createElement() {
-    return _GetAllProductsProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is GetAllProductsProvider &&
-        other.updateStateAux == updateStateAux;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, updateStateAux.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-mixin GetAllProductsRef on AutoDisposeFutureProviderRef<List<ProductModel>> {
-  /// The parameter `updateStateAux` of this provider.
-  bool get updateStateAux;
-}
-
-class _GetAllProductsProviderElement
-    extends AutoDisposeFutureProviderElement<List<ProductModel>>
-    with GetAllProductsRef {
-  _GetAllProductsProviderElement(super.provider);
-
-  @override
-  bool get updateStateAux => (origin as GetAllProductsProvider).updateStateAux;
-}
-
-String _$updateStateHash() => r'55761182f07e9d5cb5cdfe42500d8cfd907ba0c0';
-
-/// See also [UpdateState].
-@ProviderFor(UpdateState)
-final updateStateProvider =
-    AutoDisposeNotifierProvider<UpdateState, bool>.internal(
-  UpdateState.new,
-  name: r'updateStateProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$updateStateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$UpdateState = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -31,8 +31,6 @@ class CardShoppingPageState extends ConsumerState<CardShoppingPage> {
     final listShoppingNotifier = ref.watch(listShoppingProvider.notifier);
     final getTotalToPay = ref.watch(totalToPayProvider);
     final getTotalToPayNotifier = ref.watch(totalToPayProvider.notifier);
-    final updateStateShoppingNotifier =
-        ref.watch(updateStateShoppingProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Carrito de compras'),
@@ -102,7 +100,6 @@ class CardShoppingPageState extends ConsumerState<CardShoppingPage> {
                           // ignore: use_build_context_synchronously
                           context,
                         );
-                        updateStateShoppingNotifier.update();
                         intanceIndex.changeIndex(1);
                         // ignore: use_build_context_synchronously
                         context.push(PathRouter.shopping);

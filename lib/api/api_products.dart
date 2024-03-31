@@ -41,33 +41,35 @@ class ApiProducts {
     return imageUrls;
   }
 
-  Future<List<ProductModel>> getProducts({bool getAll = false}) async {
+  Stream<List<ProductModel>> getProductsRealTime({bool getAll = false}) {
     final uidUser = FirebaseAuth.instance.currentUser?.uid;
-    QuerySnapshot querySnapshot;
+    Query query;
+
     if (getAll) {
-      querySnapshot = await FirebaseFirestore.instance
+      query = FirebaseFirestore.instance
           .collection('products')
-          .orderBy('createdAt', descending: true)
-          .get();
+          .orderBy('createdAt', descending: true);
     } else {
-      querySnapshot = await FirebaseFirestore.instance
+      query = FirebaseFirestore.instance
           .collection('products')
           .where('uid', isEqualTo: uidUser)
-          .orderBy('createdAt', descending: false)
-          .get();
+          .orderBy('createdAt', descending: false);
     }
-    return querySnapshot.docs.map((doc) {
-      return ProductModel(
-        id: doc.id,
-        uid: doc['uid'],
-        name: doc['name'],
-        price: doc['price'].toDouble(),
-        stock: doc['stock'],
-        images: List<String>.from(doc['images'] ?? []),
-        createdAt: doc['createdAt'],
-        isSold: doc['isSold'] ?? false,
-      );
-    }).toList();
+
+    return query.snapshots().map((querySnapshot) {
+      return querySnapshot.docs.map((doc) {
+        return ProductModel(
+          id: doc.id,
+          uid: doc['uid'],
+          name: doc['name'],
+          price: doc['price'].toDouble(),
+          stock: doc['stock'],
+          images: List<String>.from(doc['images'] ?? []),
+          createdAt: doc['createdAt'],
+          isSold: doc['isSold'] ?? false,
+        );
+      }).toList();
+    });
   }
 
   Future<bool> checkAndBuyProducts(

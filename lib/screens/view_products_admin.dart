@@ -21,26 +21,14 @@ class ViewProductsAdminState extends ConsumerState<ViewProductsAdmin> {
   List<ProductModel> allData = [];
   @override
   Widget build(BuildContext context) {
-    final updateState = ref.watch(updateStateProvider);
-    final updateStateNotifier = ref.watch(updateStateProvider.notifier);
-    final getAllProducts = ref.watch(
-      getAllProductsProvider(updateStateAux: updateState),
-    );
+    final getProductsRealTime = ref.watch(getProductsRealTimeProvider());
     final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           title: const Text('Ver todos los productos'),
-          actions: [
-            IconButton(
-              onPressed: () {
-                updateStateNotifier.update();
-              },
-              icon: const Icon(Icons.refresh),
-            ),
-          ],
         ),
         drawer: const DrawerWidget(),
-        body: getAllProducts.when(
+        body: getProductsRealTime.when(
           data: (data) {
             if (data.isEmpty) {
               return const Center(

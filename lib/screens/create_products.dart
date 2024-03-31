@@ -33,7 +33,6 @@ class CreateProductsState extends ConsumerState<CreateProducts> {
   Widget build(BuildContext context) {
     final listImagesInstance = ref.watch(loadImagesProvider.notifier);
     final listImages = ref.watch(loadImagesProvider);
-    final updateStateNotifier = ref.watch(updateStateProvider.notifier);
     return Scaffold(
       appBar: AppBar(title: const Text('Crear producto')),
       drawer: const DrawerWidget(),
@@ -114,7 +113,10 @@ class CreateProductsState extends ConsumerState<CreateProducts> {
                 imageFiles: listImages,
               ),
               const SizedBox(height: 10),
-              Center(child: _buttonCreate(listImages, updateStateNotifier)),
+              Center(
+                  child: _buttonCreate(
+                listImages,
+              )),
               const SizedBox(height: 10),
             ],
           ),
@@ -124,7 +126,8 @@ class CreateProductsState extends ConsumerState<CreateProducts> {
   }
 
   Widget _buttonCreate(
-      List<File>? listImages, UpdateState updateStateNotifier) {
+    List<File>? listImages,
+  ) {
     return CustomLoadingButton(
         primaryColor: Theme.of(context).primaryColorDark,
         color: Colors.white,
@@ -160,7 +163,6 @@ class CreateProductsState extends ConsumerState<CreateProducts> {
           listImagesInstance.clear();
           _btnController.success();
           _btnController.reset();
-          updateStateNotifier.update();
           product = ProductModel();
           // ignore: use_build_context_synchronously
           CustomSnackbar.showSnackBar('Producto creado', context);

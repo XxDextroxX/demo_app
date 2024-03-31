@@ -10,22 +10,10 @@ class ShoppingPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final updateStateShopping = ref.watch(updateStateShoppingProvider);
-    final updateStateShoppingNotifier =
-        ref.watch(updateStateShoppingProvider.notifier);
-    final getShopping =
-        ref.watch(getShoppingProvider(updateStateAux: updateStateShopping));
+    final getShopping = ref.watch(getShoppingProvider);
     return Scaffold(
         appBar: AppBar(
           title: const Text('Compras realizadas'),
-          actions: [
-            IconButton(
-              onPressed: () {
-                updateStateShoppingNotifier.update();
-              },
-              icon: const Icon(Icons.refresh),
-            ),
-          ],
         ),
         drawer: const DrawerWidget(),
         body: getShopping.when(
