@@ -1,4 +1,5 @@
 # Miscellaneous
+lib/config/notifications/access_firebase_token.dart
 *.class
 *.log
 *.pyc
