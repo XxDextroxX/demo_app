@@ -1,3 +1,4 @@
+import 'package:demo_app/models/models.dart';
 import 'package:demo_app/shared/services/key_values_impl.dart';
 import 'package:intl/intl.dart';
 
@@ -53,5 +54,19 @@ class GeneralUtils {
     } else {
       return 'hace ${difference.inSeconds} segundos';
     }
+  }
+
+  static List<String> getUidSellers(List<ProductModel> products) {
+    // Creamos un conjunto (Set) para almacenar los uid únicos.
+    Set<String> uniqueUids = {};
+
+    // Iteramos sobre la lista de productos.
+    for (var product in products) {
+      // Agregamos el uid del producto al conjunto.
+      uniqueUids.add(product.uid ?? ''); // Aseguramos que el uid no sea nulo.
+    }
+
+    // Convertimos el conjunto a una lista y la retornamos.
+    return uniqueUids.toList();
   }
 }

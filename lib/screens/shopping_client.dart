@@ -51,8 +51,10 @@ class ShoppingPage extends ConsumerWidget {
                   title: const Text('Fecha de compra:'),
                   subtitle:
                       Text(data[index].createdAt.toString().substring(0, 10)),
-                  trailing:
-                      Text(GeneralUtils.timeAgo(data[index].createdAt ?? '')),
+                  trailing: Text(
+                    GeneralUtils.timeAgo(data[index].createdAt ?? ''),
+                    style: const TextStyle(fontSize: 12),
+                  ),
                 );
               },
             );

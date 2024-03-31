@@ -154,6 +154,8 @@ class CreateProductsState extends ConsumerState<CreateProducts> {
             product,
             images,
           );
+          final pushNotification = PushNotifications();
+          pushNotification.sendNotificationClients(product.name ?? '');
           final listImagesInstance = ref.watch(loadImagesProvider.notifier);
           listImagesInstance.clear();
           _btnController.success();

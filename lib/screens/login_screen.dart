@@ -202,6 +202,7 @@ class InputsState extends ConsumerState<_Inputs> {
                           _btnController.reset();
                           return;
                         }
+                        authInstance.saveTokenToDatabase();
                         userModel.setData(userLoged);
                       }
                       GeneralUtils.setUid(user.user?.uid ?? '');

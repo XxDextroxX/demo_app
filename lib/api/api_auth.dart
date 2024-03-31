@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_app/models/models.dart';
 import 'package:demo_app/shared/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginAuth {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -161,5 +162,64 @@ class LoginAuth {
       'isActive': true,
       'createdAt': DateTime.now().toIso8601String(),
     });
+  }
+
+  Future<String?> saveToken() async {
+    final tokenNotifiation = await FirebaseMessaging.instance.getToken();
+    return tokenNotifiation;
+  }
+
+  Future<void> saveTokenToDatabase() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final token = await saveToken();
+    final users = FirebaseFirestore.instance.collection('users');
+    final userSnapshot = await users.where('uid', isEqualTo: userId).get();
+
+    if (userSnapshot.docs.isNotEmpty) {
+      final userDoc = userSnapshot.docs.first;
+      await userDoc.reference.update({'token': token});
+    } else {
+      print('No user found with the provided uid');
+    }
+  }
+
+  Future<String> getUserAccessToken(String uid, {String role = 'admin'}) async {
+    final users = FirebaseFirestore.instance.collection('users');
+    final userSnapshot = await users
+        .where('uid', isEqualTo: uid)
+        .where('role', isEqualTo: role)
+        .get();
+
+    if (userSnapshot.docs.isNotEmpty) {
+      final userDoc = userSnapshot.docs.first;
+      return userDoc['token'];
+    } else {
+      throw Exception('No user found with the provided uid and role');
+    }
+  }
+
+  Future<String> getUserUidAdmin() async {
+    final users = FirebaseFirestore.instance.collection('users');
+    final userSnapshot = await users.where('role', isEqualTo: 'admin').get();
+
+    if (userSnapshot.docs.isNotEmpty) {
+      final userDoc = userSnapshot.docs.first;
+      return userDoc['uid'];
+    } else {
+      throw Exception('No user found with the provided uid and role');
+    }
+  }
+
+  Future<List<String>> getUserUidsClient() async {
+    final users = FirebaseFirestore.instance.collection('users');
+    final userSnapshot = await users.where('role', isEqualTo: 'client').get();
+
+    if (userSnapshot.docs.isNotEmpty) {
+      return userSnapshot.docs
+          .map((userDoc) => userDoc['uid'] as String)
+          .toList();
+    } else {
+      return []; // Return an empty list if no users with the specified role are found
+    }
   }
 }

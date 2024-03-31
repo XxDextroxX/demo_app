@@ -26,6 +26,7 @@ class CardShoppingPageState extends ConsumerState<CardShoppingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final intanceIndex = ref.watch(currentIndexDrawerProvider.notifier);
     final listShopping = ref.watch(listShoppingProvider);
     final listShoppingNotifier = ref.watch(listShoppingProvider.notifier);
     final getTotalToPay = ref.watch(totalToPayProvider);
@@ -80,13 +81,21 @@ class CardShoppingPageState extends ConsumerState<CardShoppingPage> {
                     icon: Icons.shopping_cart_outlined,
                     btnController: _btnController,
                     onPressed: () async {
+                      final pushNotification = PushNotifications();
                       final api = ApiProducts();
                       final response =
                           await api.checkAndBuyProducts(context, listShopping);
                       if (response) {
+                        final userModel = UserModel.instance();
                         final apiShopping = ApiShopping();
                         await Future.delayed(const Duration(seconds: 1));
                         await apiShopping.addShopping(listShopping);
+                        final uidSellers =
+                            GeneralUtils.getUidSellers(listShopping);
+                        pushNotification
+                            .sendNotificationAdmin(userModel.name ?? '');
+                        pushNotification.sendNotificationSellers(
+                            userModel.name ?? '', uidSellers);
                         listShoppingNotifier.reset();
                         CustomSnackbar.showSnackBar(
                           'Compra realizada',
@@ -94,6 +103,7 @@ class CardShoppingPageState extends ConsumerState<CardShoppingPage> {
                           context,
                         );
                         updateStateShoppingNotifier.update();
+                        intanceIndex.changeIndex(1);
                         // ignore: use_build_context_synchronously
                         context.push(PathRouter.shopping);
                       }

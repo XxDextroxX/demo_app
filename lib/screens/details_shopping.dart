@@ -19,9 +19,19 @@ class DetailsShopping extends StatelessWidget {
               ListTile(
                 title: const Text('Fecha de compra:'),
                 subtitle: Text(model.createdAt.toString().substring(0, 10)),
-                trailing: Text(GeneralUtils.timeAgo(model.createdAt ?? '')),
+                trailing: Text(
+                  GeneralUtils.timeAgo(model.createdAt ?? ''),
+                  style: const TextStyle(fontSize: 12),
+                ),
               ),
-              _ViewDetailsShopping(model: model),
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: model.products!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _ViewDetailsShopping(model: model.products![index]);
+                },
+              )
             ],
           ),
         ));
@@ -30,16 +40,19 @@ class DetailsShopping extends StatelessWidget {
 
 class _ViewDetailsShopping extends StatelessWidget {
   const _ViewDetailsShopping({super.key, required this.model});
-  final ShoppingModel model;
+  final ProductModel model;
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.all(10),
       child: Column(
         children: [
+          _information(model),
           Container(
             height: 250,
+            width: size.width * 0.95,
             decoration: BoxDecoration(
               border: Border.all(color: Theme.of(context).primaryColor),
               borderRadius: BorderRadius.circular(10),
@@ -47,18 +60,10 @@ class _ViewDetailsShopping extends StatelessWidget {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: model.products!
-                    .expand(
-                        (product) => product.images!.map((url) => _image(url)))
-                    .toList(),
+                children: model.images!.map((e) => _image(e)).toList(),
               ),
             ),
           ),
-          Column(
-            children: model.products!
-                .map((product) => _information(product))
-                .toList(),
-          )
         ],
       ),
     );
@@ -94,6 +99,7 @@ class _ViewDetailsShopping extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Divider(),
           _text('Nombre:', product.name ?? ''),
           _text(
             'Precio:',
@@ -102,7 +108,6 @@ class _ViewDetailsShopping extends StatelessWidget {
           _text('Cantidad', product.stock.toString()),
           _text('Total:',
               GeneralUtils.getAmoutFormat(product.price! * product.stock!)),
-          const Divider()
         ],
       ),
     );

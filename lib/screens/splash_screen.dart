@@ -23,6 +23,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
     final auth = LoginAuth();
     final response = await auth.checkStatus();
     if (response['success'] && response['user'] != null) {
+      auth.saveTokenToDatabase();
       getRoute(response['user']?.role);
     } else {
       // ignore: use_build_context_synchronously
